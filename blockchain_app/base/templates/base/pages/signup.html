@@ -1,0 +1,77 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center my-5">Sign Up for a Secure Future</h1>
+        <p class="text-center">CaribFarm Blockchain Prototype.</p>
+        <br>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Sign Up
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'signup' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name" class="text-dark"> First Name</label>
+                                <input
+                                    type="text"
+                                    class="form-control text-dark"
+                                    name="fname"
+                                    placeholder="Enter your name"
+                                />
+                                <label for="name" class="text-dark"> Last Name</label>
+                                <input
+                                    type="text"
+                                    class="form-control text-dark"
+                                    name="lname"
+                                    placeholder="Enter your name"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="text-dark">Email address</label>
+                                <input
+                                    type="email"
+                                    class="form-control text-dark"
+                                    name="email"
+                                    placeholder="Enter your email"
+                                />
+                                <input
+                                    type="hidden"
+                                    class="form-control"
+                                    id="account_id"
+                                    name="account_id"
+                                    placeholder="Paste Account Id"
+                                />
+                            </div>
+                            <p class="text-muted small">By clicking on Submit, you allow us to store your Metamask account address.</p>
+                            <button type="submit" class="btn btn-primary btn-block rounded-pill" style="background-color: #0066cc; font-size: 1rem;">
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let account;
+
+        const connectMetamask = async () => {
+            if (window.ethereum !== "undefined") {
+                const accounts = await ethereum.request({
+                    method: "eth_requestAccounts",
+                });
+
+                account = accounts[0].trim().toLowerCase();
+                console.log("account pulled ", account);
+
+                document.getElementById("account_id").value = account;
+            }
+        };
+        
+        window.addEventListener("load", connectMetamask);
+    </script>
+{% endblock %}
